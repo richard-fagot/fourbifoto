@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/rwcarlsen/goexif/exif"
@@ -26,7 +28,7 @@ type Person struct {
 	LastName  string `json:"lastname,omitempty"`
 }
 
-var photos []Photo
+var photos []*Photo
 
 // our main function
 func main() {
@@ -35,10 +37,34 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/photos", GetPhotos).Methods("GET")
-	router.HandleFunc("/photos/{id}/{name}", GetPhoto).Methods("GET")
+	router.HandleFunc("/photos/{id}/img", GetPhotoImage).Methods("GET")
+	router.HandleFunc("/photos/{id}", GetPhoto).Methods("GET")
 	//router.HandleFunc("/photos/{id}", CreatePerson).Methods("POST")
 	//router.HandleFunc("/photos/{id}", DeletePerson).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", router))
+}
+
+func GetPhotoImage(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var photo *Photo
+	for _, item := range photos {
+		if item.ID == params["id"] {
+			photo = item
+		}
+	}
+
+	data, err := ioutil.ReadFile(photo.Name)
+
+	if err == nil {
+		var contentType string
+		contentType = "image/jpg"
+
+		w.Header().Add("Content Type", contentType)
+		w.Write(data)
+	} else {
+		w.WriteHeader(404)
+		w.Write([]byte("404 My dear - " + http.StatusText(404)))
+	}
 }
 
 func GetPhotos(w http.ResponseWriter, r *http.Request) {
@@ -69,18 +95,18 @@ func ScanPhotos(path string) {
 			photo.Year = year
 			photo.Month = month
 			photo.Name = path
-			photos = append(photos, photo)
+			photos = append(photos, &photo)
 		}
 		return nil
 	})
 	if err != nil {
 		panic(err)
 	}
-	/*
-		for _, photo := range photos {
-			fmt.Println(photo)
-		}
-	*/
+	fmt.Println(len(photos))
+	for index, photo := range photos {
+		photo.ID = strconv.Itoa(index)
+	}
+
 	fmt.Println("Finished")
 }
 
