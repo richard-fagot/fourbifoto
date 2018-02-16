@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/rwcarlsen/goexif/exif"
 )
@@ -41,7 +42,9 @@ func main() {
 	router.HandleFunc("/photos/{id}", GetPhoto).Methods("GET")
 	//router.HandleFunc("/photos/{id}", CreatePerson).Methods("POST")
 	//router.HandleFunc("/photos/{id}", DeletePerson).Methods("DELETE")
-	log.Fatal(http.ListenAndServe(":8000", router))
+	log.Fatal(
+		http.ListenAndServe(":8000", handlers.CORS(handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD"}), handlers.AllowedOrigins([]string{"*"}))(router)))
+
 }
 
 func GetPhotoImage(w http.ResponseWriter, r *http.Request) {
