@@ -1,30 +1,14 @@
 <mat-toolbar color="primary">
-  NG2 Movie Database
+  Fourbifoto
   <span class="app-toolbar-filler"></span>
-  <button mat-button (click)="create()">New</button>
+  
 </mat-toolbar>
 <div class="app-content">
   <div>
       <input matInput placeholder="Search" (keyup.enter)="search($event)">
   </div>
-  <table style="width: 100%; margin-top: 10px; border-collapse: collapse">
-      <thead style="text-align: left">
-          <tr>
-              <th>Title</th>
-              <th>Genre</th>
-              <th>Digital</th>
-              <th>Blu-Ray</th>
-              <th>DVD</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let photo of photos" style="border-top: 1px solid black">
-              <td>{{ photo.name }}</td>
-              <td><img width="100" src="http://localhost:8000/photos/{{photo.id }}/img"></td>
-              <td><mat-checkbox [disabled]="true" [checked]="false"></mat-checkbox></td>
-              <td><mat-checkbox [disabled]="true" [checked]="false"></mat-checkbox></td>
-              <td><mat-checkbox [disabled]="true" [checked]="false"></mat-checkbox></td>
-          </tr>
-      </tbody>
-  </table>
+  <mat-grid-list cols="10" rowHeight="2:1">
+    <mat-grid-tile *ngFor="let photo of photos"><img width="100" src="http://localhost:8000/photos/{{photo.id }}/img"></mat-grid-tile>
+  </mat-grid-list>
+ 
 </div>

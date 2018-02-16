@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AvailableRoutes } from './app-routing.module';
 
-import {MatCheckboxModule, MatToolbarModule, MatInputModule} from '@angular/material';
+import {MatCheckboxModule, MatToolbarModule, MatInputModule, MatGridListModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { PhotosComponent } from './photos/photos.component';
@@ -18,12 +18,12 @@ import { PhotosComponent } from './photos/photos.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    MatCheckboxModule, MatToolbarModule, MatInputModule,
+    MatCheckboxModule, MatToolbarModule, MatInputModule,MatGridListModule
     RouterModule,
     RouterModule.forRoot(AvailableRoutes),
   ],
   exports: [
-    MatCheckboxModule, MatToolbarModule, MatInputModule
+    MatCheckboxModule, MatToolbarModule, MatInputModule, MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
