@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -90,9 +91,10 @@ func GetPhoto(w http.ResponseWriter, r *http.Request) {
 
 func ScanPhotos(path string) {
 	fmt.Println("Start scan")
-	root := "C:\\Users\\RFA3456\\Google Drive\\BU Techno\\Animation\\Soirée d'agence"
+	//root := "C:\\Users\\RFA3456\\Google Drive\\BU Techno\\Animation\\Soirée d'agence"
+	root := "D:\\Images à traiter"
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if filepath.Ext(path) == ".jpg" {
+		if (strings.ToLower(filepath.Ext(path)) == ".jpg") {
 			var photo Photo
 			year, month := ReadExif(path)
 			photo.Year = year

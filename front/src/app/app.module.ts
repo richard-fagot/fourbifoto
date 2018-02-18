@@ -18,7 +18,7 @@ import { PhotosComponent } from './photos/photos.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    MatCheckboxModule, MatToolbarModule, MatInputModule,MatGridListModule
+    MatCheckboxModule, MatToolbarModule, MatInputModule,MatGridListModule,
     RouterModule,
     RouterModule.forRoot(AvailableRoutes),
   ],
