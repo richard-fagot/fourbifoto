@@ -436,9 +436,9 @@ module.exports = {
       "sourceMap": true,
       "filename": "scripts.bundle.js",
       "scripts": [
-        "C:\\RFA\\Workspaces\\angular-electron\\src\\native.js"
+        ".\\src\\native.js"
       ],
-      "basePath": "C:\\RFA\\Workspaces\\angular-electron"
+      "basePath": ".\\"
     }),
     new CopyWebpackPlugin([
       {

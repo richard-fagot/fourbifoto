@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('angular-electron App', () => {
+describe('fourbifoton App', () => {
   let page: AppPage;
 
   beforeEach(() => {
