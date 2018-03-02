@@ -24,7 +24,7 @@ export class PhotosComponent implements OnInit {
 
   private refresh() {
     this.http.get('http://localhost:8000/photos')
-        //.map(result => result.json())
+        // .map(result => result.json())
         .subscribe(result => {
           console.log(result)
             this.photos = result;
