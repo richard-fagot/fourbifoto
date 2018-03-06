@@ -13,7 +13,9 @@
               
                   <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <span *ngFor="let folder of photosFolders">{{folder}}</span>
+                      <ul>
+                        <li *ngFor="let folder of photosFolders"><span>{{folder}}</span></li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -50,8 +52,9 @@
                   
             </ul>
         </div>
+        
         <div class="col-xl">
-            <img  src="C:\Users\RFA3456\Google Drive\BU Techno\Animation\Soirée d'agence\20160218\Photos\IMG_1517.JPG">
+            <img  *ngFor="let photoPath of photosPath" [src]="photoPath">
         </div>
       </div>
 </div>

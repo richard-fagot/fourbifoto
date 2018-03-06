@@ -15,6 +15,7 @@ const menuDetails = [
 let win;
 let photosFolders = []
 let photosURIs = []
+let photosPaths = []
 
 function createWindow () {
   // Create the browser window.
@@ -65,9 +66,11 @@ function addPhotoFolder(folder) {
     photosFolders.push(folder)
     win.webContents.send('new-photo-folder', folder)
     
-    var pattern = folder + "/**/*.+(jpg|JPG|png|tiff|nef)"
-    glob(pattern, {nocase: false}, function(err, photosPaths) {
-        console.log("GetPhotoPaths : " + photosPaths)
+    var pattern = folder + "/**/*.+(jpg|png|tiff|nef)"
+    glob(pattern, function(err, photoFilesPaths) {
+        console.log("GetPhotoPaths : " + photoFilesPaths)
         if(err) return reject(err)
+        photosPaths.concat(photoFilesPaths)
+        win.webContents.send('new-photos', photoFilesPaths)
     })
 }
