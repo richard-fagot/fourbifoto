@@ -54,7 +54,12 @@
         </div>
         
         <div class="col-xl">
-            <img  *ngFor="let photoPath of photosPath" [src]="photoPath">
+          <div class="row">
+            <div *ngFor="let photoPath of photosPath; let i = index">
+                <div class="clearfix" *ngIf="i % 3 == 0"></div>
+                <div class="col-x2 img-container"><img [src]="photoPath"></div>
+            </div>
+          </div>
         </div>
       </div>
 </div>
