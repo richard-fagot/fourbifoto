@@ -12,10 +12,12 @@
                   </div>
               
                   <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                      <ul>
-                        <li *ngFor="let folder of photosFolders"><span>{{folder}}</span></li>
-                      </ul>
+                    <!--<div class="card-body">
+                    </div>-->
+                    <div class="list-group list-group-flush">
+                      <a *ngFor="let folder of photosFolders" (click)="loadFolderPhotos(folder)" class="list-group-item list-group-item-action">
+                         {{folder}}
+                      </a>
                     </div>
                   </div>
                 </div>

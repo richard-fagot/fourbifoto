@@ -52,4 +52,7 @@ export class AppComponent implements OnInit {
     ipcRenderer.send("get-photo-ppt", photoPath);
   }
 
+  loadFolderPhotos(folder) {
+
+  }
 }
