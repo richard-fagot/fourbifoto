@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xl-3">
+        <div class="col-xl-2">
             <div id="accordion">
                 <div class="card">
                   <div class="card-header" id="headingOne">
@@ -57,9 +57,32 @@
           <div class="row">
             <div *ngFor="let photoPath of photosPath; let i = index">
                 <div class="clearfix" *ngIf="i % 3 == 0"></div>
-                <div class="col-x2 img-container"><img [src]="photoPath"></div>
+                <div class="col-x2 img-container"><img [src]="sanitizer.bypassSecurityTrustUrl(photoPath)" (click)="showPhotoProperties(photoPath)"></div>
             </div>
           </div>
         </div>
-      </div>
+
+        <div class="col-xl-2">
+            <div *ngIf="photoPpt != null" class="card" style="width: 18rem;">
+                <img class="card-img-top" [src]="sanitizer.bypassSecurityTrustUrl(photoPpt.path)" alt="Photo thumb goes here">
+                <div class="card-body">
+                  <h5 class="card-title">{{photoPpt.filename}}</h5>
+                  <p class="card-text">{{photoPpt.date}}</p>
+                  <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Personnes</b></li>
+                    <li class="list-group-item"><span *ngFor="let person of photoPpt.persons">{{person}} </span></li>
+                </ul>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Albums</b></li>
+                    <li class="list-group-item"><span *ngFor="let album of photoPpt.albums">{{album}} </span></li>
+                </ul>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Catégories</b></li>
+                    <li class="list-group-item"><span *ngFor="let categorie of photoPpt.categories">{{categorie}} </span></li>
+                </ul>
+              </div>
+            </div>
+        </div>
 </div>

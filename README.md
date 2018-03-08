@@ -6,9 +6,8 @@ Need to study the three solutions to determining which one to use in each situat
 For instance, use NgZone.run();
 https://stackoverflow.com/questions/35105374/how-to-force-a-components-re-rendering-in-angular-2
 
-# Material Design Lite Extension
-https://github.com/leifoolsen/mdl-ext
-
+# Database
+https://github.com/louischatriot/nedb
 
 "exif-reader": "github:inukshuk/exif-reader#patched",
 
