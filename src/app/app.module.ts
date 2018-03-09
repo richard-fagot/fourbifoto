@@ -4,10 +4,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
+import {LasDirPipe} from './pipe/last-dir.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LasDirPipe
   ],
   imports: [
     BrowserModule

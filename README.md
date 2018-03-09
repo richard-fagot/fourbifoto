@@ -1,6 +1,9 @@
 # NEXT STEP
 
-Afficher uniquement le dernier répertoire du path (en utilisant un pipe ?) et ajouter un badge contenant le nombre de photos.
+Pour chaque photo, créer un fichier contenant les propriété de la photo (nom, emplacement, album, personnes, categories...).
+
+# Step
+Afficher uniquement le dernier répertoire du path (en utilisant un pipe ?) ~~et ajouter un badge contenant le nombre de photos.~~
 
 ## Step
 A l'ajout d'un répertoire, ajouter le répertoire à la liste des répertoires, le sélectionner et afficher uniquement les photos de ce répertoire comme lorsqu'on clique sur un répertoire.
