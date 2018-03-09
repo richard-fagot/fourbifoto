@@ -15,6 +15,10 @@ const menuDetails = [
         {
           label: 'Ajouter un dossier',
           click () { dialog.showOpenDialog({properties: ['openDirectory', 'multiSelections']}, addPhotoFolder) }
+        },
+        {
+          label: 'Quitter',
+          click () { app.quit() }
         }
       ]
     }]
