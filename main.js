@@ -87,30 +87,29 @@ app.on('activate', function () {
 
 function addPhotoFolder(folder) {
     savePhotoFolder(folder[0])
+    console.log('Add folder ' + folder[0]);
+    win.webContents.send('new-photo-folder', folder[0])
     
-    win.webContents.send('new-photo-folder', folder)
-    
-    var pattern = folder + "/**/*.+(jpg|png|tiff|nef)"
-    glob(pattern, function(err, photoFilesPaths) {
-        console.log("GetPhotoPaths : " + photoFilesPaths)
-        if(err) return reject(err)
-        photosPaths.concat(photoFilesPaths)
-        win.webContents.send('new-photos', photoFilesPaths)
-    })
+    // var pattern = folder + "/**/*.+(jpg|png|tiff|nef)"
+    // glob(pattern, function(err, photoFilesPaths) {
+    //     if(err) return reject(err)
+    //     photosPaths.concat(photoFilesPaths)
+    //     win.webContents.send('new-photos', photoFilesPaths)
+    // })
 }
 
 function getPhotoPathFromFolder(folder) {
+  console.log('::getPhotoPathFromFolder() ' + folder)
   var pattern = folder + "/**/*.+(jpg|png|tiff|nef)"
   glob(pattern, function(err, photoFilesPaths) {
-      console.log("GetPhotoPaths : " + photoFilesPaths)
       if(err) return reject(err)
       //photosPaths.concat(photoFilesPaths)
+      console.log('Found following photos ' + photoFilesPaths);
       win.webContents.send('display-folder-photos', photoFilesPaths)
   })
 }
 
 ipcMain.on('get-photo-ppt', (event, photoPath) => {
-  console.log("get-photo-path");
   let i = photoPath.lastIndexOf('/');
   let pptFileName = photoPath.substr(i) + '.json';
   var photoPpt = JSON.parse(fs.readFileSync(photoPath.substring(0,i)+pptFileName, 'utf8'));
@@ -124,12 +123,11 @@ ipcMain.on('ready-to-init-data', () => {
 })
 
 ipcMain.on('get-photos-uri-from-folder', (event, folder) => {
-  console.log('User aked for displayong photo of a folder')
+  console.log('Event ' + 'get-photos-uri-from-folder');
   getPhotoPathFromFolder(folder)
 })
 
 function InitDbAndPropertiesAndData() {
-  console.log("InitDbAndPropertiesAndData")
   appProperties = loadAppProperties()
   db = new Datastore({ filename: path.join(app.getAppPath("home"),"fourbifoto"), autoload: true }) 
 }
@@ -145,7 +143,7 @@ function loadAppProperties() {
 }
 
 function savePhotoFolder(folder) {
-  photosFolders.push(folder)
+  //photosFolders.push(folder)
   appProperties.folders.push(folder)
   fs.writeFileSync(pptFileNamePath, JSON.stringify(appProperties))
 }

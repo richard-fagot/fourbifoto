@@ -15,7 +15,7 @@
                     <!--<div class="card-body">
                     </div>-->
                     <div class="list-group list-group-flush">
-                      <a *ngFor="let folder of photosFolders" (click)="loadFolderPhotos(folder)" class="list-group-item list-group-item-action">
+                      <a *ngFor="let folder of photosFolders;let i = index;" (click)="loadFolderPhotos(folder, i)" class="list-group-item list-group-item-action" [class.active]="selectedFolder === i">
                          {{folder}}
                       </a>
                     </div>

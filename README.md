@@ -1,3 +1,12 @@
+# NEXT STEP
+
+Afficher uniquement le dernier répertoire du path (en utilisant un pipe ?) et ajouter un badge contenant le nombre de photos.
+
+## Step
+A l'ajout d'un répertoire, ajouter le répertoire à la liste des répertoires, le sélectionner et afficher uniquement les photos de ce répertoire comme lorsqu'on clique sur un répertoire.
+
+=> supprimer l'ajout continu de path dans le main et dans l'ihm.
+
 # Configure Angular for electron
 http://www.matthiassommer.it/software-architecture/webpack-node-modules/
 

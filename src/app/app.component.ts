@@ -13,12 +13,14 @@ export class AppComponent implements OnInit {
   photosByDate = [{date: '00/00/0000', uris: ['url1', 'url2']} ];
   photosPath = [];
   photoPpt = null;
+  selectedFolder = -1;
 
   constructor(private zone: NgZone, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     ipcRenderer.on('new-photo-folder', (event, message) => {
-      this.addFolder(message[0]);
+      console.log('Event ' + 'new-photo-folder' );
+      this.addFolder(message);
     });
     ipcRenderer.on('new-photos', (event, message) => {
       this.addPhotos(message);
@@ -29,25 +31,23 @@ export class AppComponent implements OnInit {
     });
     ipcRenderer.on('init-data', (event, message) => {
       this.photosFolders = message.folders;
-      console.log(message);
       this.zone.run(() => {});
     });
     ipcRenderer.on('display-folder-photos', (event, message) => {
-      console.log('Display photos asked by user');
+      console.log('Received event ' + 'display-folder-photos');
       this.displayFolderPhotos(message);
     });
     ipcRenderer.send('ready-to-init-data');
   }
 
   addFolder(folder) {
+    console.log('Add folder ' + folder);
     this.photosFolders.push(folder);
+    this.loadFolderPhotos(folder, this.photosFolders.length - 1);
   }
 
   addPhotos(photoFilesPaths) {
-    console.log('receive new-photos event');
-    console.log('Before' + photoFilesPaths);
     this.photosPath = this.photosPath.concat(photoFilesPaths);
-    console.log('After' + this.photosPath);
     this.zone.run(() => {});
   }
 
@@ -55,12 +55,15 @@ export class AppComponent implements OnInit {
     ipcRenderer.send('get-photo-ppt', photoPath);
   }
 
-  loadFolderPhotos(folder) {
+  loadFolderPhotos(folder, index) {
+    console.log('Load folder photo ' + folder + ' at index ' + index);
     console.log('User has clicked click on a folder');
+    this.selectedFolder = index;
     ipcRenderer.send('get-photos-uri-from-folder', folder);
   }
 
   displayFolderPhotos(paths) {
+    console.log('::displayFolderPhotos() ' + paths);
     this.photosPath = paths;
     this.zone.run(() => {});
   }
