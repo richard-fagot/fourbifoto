@@ -99,6 +99,16 @@ function addPhotoFolder(folder) {
     })
 }
 
+function getPhotoPathFromFolder(folder) {
+  var pattern = folder + "/**/*.+(jpg|png|tiff|nef)"
+  glob(pattern, function(err, photoFilesPaths) {
+      console.log("GetPhotoPaths : " + photoFilesPaths)
+      if(err) return reject(err)
+      //photosPaths.concat(photoFilesPaths)
+      win.webContents.send('display-folder-photos', photoFilesPaths)
+  })
+}
+
 ipcMain.on('get-photo-ppt', (event, photoPath) => {
   console.log("get-photo-path");
   let i = photoPath.lastIndexOf('/');
@@ -111,6 +121,11 @@ ipcMain.on('get-photo-ppt', (event, photoPath) => {
 ipcMain.on('ready-to-init-data', () => {
   InitDbAndPropertiesAndData()
   win.webContents.send('init-data', appProperties)
+})
+
+ipcMain.on('get-photos-uri-from-folder', (event, folder) => {
+  console.log('User aked for displayong photo of a folder')
+  getPhotoPathFromFolder(folder)
 })
 
 function InitDbAndPropertiesAndData() {

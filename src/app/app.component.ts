@@ -32,27 +32,36 @@ export class AppComponent implements OnInit {
       console.log(message);
       this.zone.run(() => {});
     });
-    ipcRenderer.send("ready-to-init-data");
+    ipcRenderer.on('display-folder-photos', (event, message) => {
+      console.log('Display photos asked by user');
+      this.displayFolderPhotos(message);
+    });
+    ipcRenderer.send('ready-to-init-data');
   }
 
   addFolder(folder) {
     this.photosFolders.push(folder);
-    //this.zone.run(() => {});
   }
 
   addPhotos(photoFilesPaths) {
     console.log('receive new-photos event');
-    console.log("Before" + photoFilesPaths);
-    this.photosPath = this.photosPath.concat(photoFilesPaths);//.map(path => this.sanitizer.bypassSecurityTrustUrl(path)));
-    console.log("After" + this.photosPath);
+    console.log('Before' + photoFilesPaths);
+    this.photosPath = this.photosPath.concat(photoFilesPaths);
+    console.log('After' + this.photosPath);
     this.zone.run(() => {});
   }
 
   showPhotoProperties(photoPath) {
-    ipcRenderer.send("get-photo-ppt", photoPath);
+    ipcRenderer.send('get-photo-ppt', photoPath);
   }
 
   loadFolderPhotos(folder) {
+    console.log('User has clicked click on a folder');
+    ipcRenderer.send('get-photos-uri-from-folder', folder);
+  }
 
+  displayFolderPhotos(paths) {
+    this.photosPath = paths;
+    this.zone.run(() => {});
   }
 }
