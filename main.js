@@ -87,6 +87,7 @@ app.on('activate', function () {
 
 function addPhotoFolder(folder) {
     savePhotoFolder(folder[0])
+    createPhotosPropertiesFiles(folder[0]);
     console.log('Add folder ' + folder[0]);
     win.webContents.send('new-photo-folder', folder[0])
     
@@ -96,6 +97,28 @@ function addPhotoFolder(folder) {
     //     photosPaths.concat(photoFilesPaths)
     //     win.webContents.send('new-photos', photoFilesPaths)
     // })
+}
+
+function createPhotosPropertiesFiles(folder) {
+  var pattern = folder + "/**/*.+(jpg|png|tiff|nef)"
+  glob(pattern, function(err, photoFilesPaths) {
+      if(err) return reject(err)
+      photoFilesPaths.forEach(function(photoPath) {
+        var photoFilename = path.basename(photoPath)
+        var photoFolder = path.dirname(photoPath)
+
+        var photoPptFileName = photoFilename + '.fourbifoto'
+        var photoPptFilePath = path.join(photoFolder, photoPptFileName)
+
+        if(!fs.existsSync(photoPptFilePath)) {
+          var ppt = {filename: photoFilename, path: photoFolder, date: "", persons: [], albums: [], categories: []}
+          fs.writeFile(photoPptFilePath, JSON.stringify(ppt), 'utf8', (err) => {
+            if(err) throw err
+          })
+        }
+
+      });
+  })
 }
 
 function getPhotoPathFromFolder(folder) {
@@ -111,7 +134,7 @@ function getPhotoPathFromFolder(folder) {
 
 ipcMain.on('get-photo-ppt', (event, photoPath) => {
   let i = photoPath.lastIndexOf('/');
-  let pptFileName = photoPath.substr(i) + '.json';
+  let pptFileName = photoPath.substr(i) + '.fourbifoto';
   var photoPpt = JSON.parse(fs.readFileSync(photoPath.substring(0,i)+pptFileName, 'utf8'));
 
   win.webContents.send('show-photo-ppt', photoPpt);

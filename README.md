@@ -1,6 +1,9 @@
 # NEXT STEP
 
-Pour chaque photo, créer un fichier contenant les propriété de la photo (nom, emplacement, album, personnes, categories...).
+Dans le fichier de propriétés des photos, ajouter les EXIF.
+
+# Step
+Pour chaque photo, créer un fichier contenant les propriétés de la photo (nom, emplacement, album, personnes, categories...).
 
 # Step
 Afficher uniquement le dernier répertoire du path (en utilisant un pipe ?) ~~et ajouter un badge contenant le nombre de photos.~~
