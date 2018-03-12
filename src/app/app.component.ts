@@ -64,8 +64,12 @@ export class AppComponent implements OnInit {
   }
 
   displayFolderPhotos(paths) {
-    console.log('::displayFolderPhotos() ' + paths);
+    console.log('::displayFolderPhotos() ' + JSON.stringify(paths));
     this.photosPath = paths;
     this.zone.run(() => {});
+  }
+
+  getPhotosDateGroups(): Array<string> {
+    return Object.keys(this.photosPath);
   }
 }

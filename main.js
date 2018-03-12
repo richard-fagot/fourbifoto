@@ -8,6 +8,17 @@ const exif = require('fast-exif')
 const pptFileName = "fourbifoto.properties"
 const pptFileNamePath = path.join(app.getAppPath("home"), pptFileName);
 const emptyAppProperties = {folders: []}
+// Photo class to persist
+// { filename: photoFilename: string
+// , path: string
+// , date: string
+// , persons: arrayOfPersons
+// , albums: arrayOfStrings
+// , categories: arrayOfStrings }
+
+
+
+
 
 const menuDetails = [
     {
@@ -30,12 +41,12 @@ var db
 
 // Json object to store photo folders and preferences.
 // Persisted in fourbifoto.properties
-var appProperties;
+var appProperties
 
-let win;
-let photosFolders = []
-let photosURIs = []
-let photosPaths = []
+var win
+var photosFolders = []
+var photosURIs = []
+var photosPaths = []
 
 
 function createWindow () {
@@ -63,8 +74,6 @@ function createWindow () {
   win.on('closed', function () {
     win = null
   })
-  
-  
 }
 
 // Create window on electron intialization
@@ -87,17 +96,10 @@ app.on('activate', function () {
 })
 
 function addPhotoFolder(folder) {
-    savePhotoFolder(folder[0])
-    createPhotosPropertiesFiles(folder[0]);
-    console.log('Add folder ' + folder[0]);
-    win.webContents.send('new-photo-folder', folder[0])
-    
-    // var pattern = folder + "/**/*.+(jpg|png|tiff|nef)"
-    // glob(pattern, function(err, photoFilesPaths) {
-    //     if(err) return reject(err)
-    //     photosPaths.concat(photoFilesPaths)
-    //     win.webContents.send('new-photos', photoFilesPaths)
-    // })
+  let folderPath = folder[0]//path.win32.normalize(folder[0])
+  savePhotoFolder(folderPath)
+  createPhotosPropertiesFiles(folderPath);
+  win.webContents.send('new-photo-folder', folderPath)
 }
 
 function createPhotosPropertiesFiles(folder) {
@@ -105,8 +107,15 @@ function createPhotosPropertiesFiles(folder) {
   glob(pattern, function(err, photoFilesPaths) {
       if(err) return reject(err)
       photoFilesPaths.forEach(function(photoPath) {
-        exif.read(photoPath)
-          .then(exifData => initAndSavePhotoPptFile(photoPath, exifData))
+        var p = photoPath
+        // As glob function deal only with "/" we need to
+        // Normalize to the win32 os when needed.
+        if(process.platform === "win32") {
+          p = path.win32.normalize(photoPath)
+        }
+
+        exif.read(p)
+          .then(exifData => initAndSavePhotoPptFile(p, exifData))
           .catch(console.error)
       });
   })
@@ -122,6 +131,10 @@ function initAndSavePhotoPptFile(photoPath, exifData) {
     
     var ppt = {filename: photoFilename, path: photoFolder, date: exifData.exif.DateTimeOriginal, persons: [], albums: [], categories: []}
     console.log(JSON.stringify(ppt))
+    db.insert(ppt, function(err, doc) {
+      console.log('Inserted', doc.name, 'with ID', doc._id);
+    })
+
     fs.writeFile(photoPptFilePath, JSON.stringify(ppt), 'utf8', (err) => {
       if(err) throw err
     })
@@ -130,12 +143,17 @@ function initAndSavePhotoPptFile(photoPath, exifData) {
 
 function getPhotoPathFromFolder(folder) {
   console.log('::getPhotoPathFromFolder() ' + folder)
-  var pattern = folder + "/**/*.+(jpg|png|tiff|nef)"
-  glob(pattern, function(err, photoFilesPaths) {
-      if(err) return reject(err)
-      //photosPaths.concat(photoFilesPaths)
-      console.log('Found following photos ' + photoFilesPaths);
-      win.webContents.send('display-folder-photos', photoFilesPaths)
+  db.find({ path: folder}).sort({date: 1}).exec(function (err, docs) {
+    console.log(docs)
+    var paths = {}
+    docs.forEach(function(photo) {
+      var dateString = (new Date(photo.date)).toDateString()
+      if(!(dateString in paths)) {
+        paths[dateString] = []
+      }
+      paths[dateString].push(path.join(photo.path, photo.filename))
+    })
+    win.webContents.send('display-folder-photos', paths)
   })
 }
 
