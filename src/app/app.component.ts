@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
     });
     ipcRenderer.on('show-photo-ppt', (event, message) => {
       this.photoPpt = message;
+      console.log('Date ' + this.photoPpt.date);
       this.zone.run(() => {});
     });
     ipcRenderer.on('init-data', (event, message) => {

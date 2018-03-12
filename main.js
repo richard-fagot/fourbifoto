@@ -3,6 +3,7 @@ const glob = require('glob')
 const fs = require('fs');
 const Datastore = require('nedb')
 const path = require('path')
+const exif = require('fast-exif')
 
 const pptFileName = "fourbifoto.properties"
 const pptFileNamePath = path.join(app.getAppPath("home"), pptFileName);
@@ -104,21 +105,27 @@ function createPhotosPropertiesFiles(folder) {
   glob(pattern, function(err, photoFilesPaths) {
       if(err) return reject(err)
       photoFilesPaths.forEach(function(photoPath) {
-        var photoFilename = path.basename(photoPath)
-        var photoFolder = path.dirname(photoPath)
-
-        var photoPptFileName = photoFilename + '.fourbifoto'
-        var photoPptFilePath = path.join(photoFolder, photoPptFileName)
-
-        if(!fs.existsSync(photoPptFilePath)) {
-          var ppt = {filename: photoFilename, path: photoFolder, date: "", persons: [], albums: [], categories: []}
-          fs.writeFile(photoPptFilePath, JSON.stringify(ppt), 'utf8', (err) => {
-            if(err) throw err
-          })
-        }
-
+        exif.read(photoPath)
+          .then(exifData => initAndSavePhotoPptFile(photoPath, exifData))
+          .catch(console.error)
       });
   })
+}
+
+function initAndSavePhotoPptFile(photoPath, exifData) {
+  if(!fs.existsSync(photoPptFilePath)) {
+    var photoFilename = path.basename(photoPath)
+    var photoFolder = path.dirname(photoPath)
+    
+    var photoPptFileName = photoFilename + '.fourbifoto'
+    var photoPptFilePath = path.join(photoFolder, photoPptFileName)
+    
+    var ppt = {filename: photoFilename, path: photoFolder, date: exifData.exif.DateTimeOriginal, persons: [], albums: [], categories: []}
+    console.log(JSON.stringify(ppt))
+    fs.writeFile(photoPptFilePath, JSON.stringify(ppt), 'utf8', (err) => {
+      if(err) throw err
+    })
+  }
 }
 
 function getPhotoPathFromFolder(folder) {

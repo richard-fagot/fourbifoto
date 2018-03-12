@@ -69,7 +69,7 @@
                 <img class="card-img-top" [src]="sanitizer.bypassSecurityTrustUrl(photoPpt.path)" alt="Photo thumb goes here">
                 <div class="card-body">
                   <h5 class="card-title">{{photoPpt.filename}}</h5>
-                  <p class="card-text">{{photoPpt.date}}</p>
+                  <p class="card-text">{{photoPpt.date | date:'mediumDate':'':'fr-FR'}}</p>
                   <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
                 </div>
                 <ul class="list-group list-group-flush">

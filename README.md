@@ -1,5 +1,7 @@
 # NEXT STEP
+Afficher les photos par date.
 
+# Step
 Dans le fichier de propriétés des photos, ajouter les EXIF.
 
 # Step
