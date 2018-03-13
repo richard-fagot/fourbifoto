@@ -129,7 +129,7 @@ function initAndSavePhotoPptFile(photoPath, exifData) {
     var photoPptFileName = photoFilename + '.fourbifoto'
     var photoPptFilePath = path.join(photoFolder, photoPptFileName)
     
-    var ppt = {filename: photoFilename, path: photoFolder, date: exifData.exif.DateTimeOriginal, persons: [], albums: [], categories: []}
+    var ppt = {filename: photoFilename, path: photoFolder, date: new Date(exifData.exif.DateTimeOriginal), persons: [], albums: [], categories: []}
     console.log(JSON.stringify(ppt))
     db.insert(ppt, function(err, doc) {
       console.log('Inserted', doc.name, 'with ID', doc._id);
@@ -143,16 +143,20 @@ function initAndSavePhotoPptFile(photoPath, exifData) {
 
 function getPhotoPathFromFolder(folder) {
   console.log('::getPhotoPathFromFolder() ' + folder)
-  db.find({ path: folder}).sort({date: 1}).exec(function (err, docs) {
+  var paths = {}
+  // Ordering results here is unnecessary as the ipc.send function
+  // can reorder elements.
+  db.find({ path: folder}, function (err, docs) {
     console.log(docs)
-    var paths = {}
     docs.forEach(function(photo) {
-      var dateString = (new Date(photo.date)).toDateString()
+      var dateString = photo.date.toDateString()
       if(!(dateString in paths)) {
         paths[dateString] = []
       }
       paths[dateString].push(path.join(photo.path, photo.filename))
     })
+    console.log("############## PATHS ###########")
+    console.log(paths)
     win.webContents.send('display-folder-photos', paths)
   })
 }

@@ -70,6 +70,15 @@ export class AppComponent implements OnInit {
   }
 
   getPhotosDateGroups(): Array<string> {
-    return Object.keys(this.photosPath);
+    // Ordering here is needed as the ipc.send reorder objects
+    return Object.keys(this.photosPath).sort(this.orderDateDesc);
+  }
+
+  orderDateDesc(a, b): number {
+    const da = new Date(a);
+    const db = new Date(b);
+    if (da < db) {return 1; }
+    if (da > db) {return -1; }
+    return 0;
   }
 }

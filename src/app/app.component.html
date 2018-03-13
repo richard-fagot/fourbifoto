@@ -56,12 +56,16 @@
         </div>
         
         <div class="col-xl">
-          <div class="row">
-            <div *ngFor="let photoPath of getPhotosDateGroups(); let i = index">
+
+          <div *ngFor="let photoDate of getPhotosDateGroups();"class="row">
+            <div class="col-xl-12 display-4 bg-light border my-2">{{photoDate | date:'mediumDate':'':'fr-FR'}}</div>
+            <div class="clearfix"></div>
+            <div *ngFor="let photoPath of photosPath[photoDate]; let i = index">
                 <div class="clearfix" *ngIf="i % 3 == 0"></div>
-                <div class="col-x2 img-container"><img [src]="sanitizer.bypassSecurityTrustUrl(photoPath)" (click)="showPhotoProperties(photoPath)"></div>
+                <div class="col-xl-2 img-container"><img [src]="sanitizer.bypassSecurityTrustUrl(photoPath)" (click)="showPhotoProperties(photoPath)"></div>
             </div>
           </div>
+
         </div>
 
         <div class="col-xl-2">
