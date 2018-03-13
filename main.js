@@ -162,9 +162,10 @@ function getPhotoPathFromFolder(folder) {
 }
 
 ipcMain.on('get-photo-ppt', (event, photoPath) => {
-  let i = photoPath.lastIndexOf('/');
-  let pptFileName = photoPath.substr(i) + '.fourbifoto';
-  var photoPpt = JSON.parse(fs.readFileSync(photoPath.substring(0,i)+pptFileName, 'utf8'));
+  console.log('#EVENT get-photo-ppt')
+  console.log("photoPath: " + photoPath)
+  let pptFileName = photoPath + '.fourbifoto';
+  var photoPpt = JSON.parse(fs.readFileSync(pptFileName, 'utf8'));
 
   win.webContents.send('show-photo-ppt', photoPpt);
 })

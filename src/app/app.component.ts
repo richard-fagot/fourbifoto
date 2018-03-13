@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
   }
 
   showPhotoProperties(photoPath) {
+    console.log('::showPhotoProperties ' + photoPath);
     ipcRenderer.send('get-photo-ppt', photoPath);
   }
 

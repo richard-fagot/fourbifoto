@@ -1,4 +1,7 @@
 # NEXT STEP
+Permettre d'associer une photo à un album.
+
+# step 
 Afficher les photos par date.
 
 # Step
