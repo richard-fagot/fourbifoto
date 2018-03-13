@@ -1,7 +1,12 @@
 # NEXT STEP
+
+=> BUG: l'ajout d'un même album est affiché en double.
+Afficher les albums créés dans le menu album et faire le lien d'un clic sur un tag album pour ouvrir l'album correspondant.
+
+# Step
 Permettre d'associer une photo à un album.
 
-# step 
+# Step 
 Afficher les photos par date.
 
 # Step

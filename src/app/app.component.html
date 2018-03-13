@@ -12,8 +12,6 @@
                   </div>
               
                   <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                    <!--<div class="card-body">
-                    </div>-->
                     <div class="list-group list-group-flush">
                       <a *ngFor="let folder of photosFolders;let i = index;" (click)="loadFolderPhotos(folder, i)" class="list-group-item list-group-item-action" [class.active]="selectedFolder === i">
                          {{folder | lastDir}}
@@ -44,8 +42,10 @@
                     </h5>
                   </div>
                   <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                      ????
+                    <div class="list-group list-group-flush">
+                      <a *ngFor="let album of albums;let i = index;" (click)="loadPhotosFromAlbum(album, i)" class="list-group-item list-group-item-action" [class.active]="selectedAlbum === i">
+                         {{album}}
+                      </a>
                     </div>
                   </div>
                 </div>

@@ -175,8 +175,16 @@ ipcMain.on('get-photo-ppt', (event, photoPath) => {
 })
 
 ipcMain.on('ready-to-init-data', () => {
+  console.log("#EVENT ready-to-init-data")
   InitDbAndPropertiesAndData()
-  win.webContents.send('init-data', appProperties)
+  let albums = new Set()
+  db.find({ $where: function() {return this.albums.length > 0;}}, {albums: 1, _id: 0}, function(err, docs) {
+    console.log(JSON.stringify(docs))
+    docs.forEach(doc => {
+      doc.albums.forEach(album => albums.add(album))
+    })
+    win.webContents.send('init-data', {appPpt: appProperties, albums: [...albums]})
+  })
 })
 
 ipcMain.on('get-photos-uri-from-folder', (event, folder) => {

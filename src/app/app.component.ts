@@ -14,7 +14,10 @@ export class AppComponent implements OnInit {
   photosPath = [];
   photoPpt = null;
   selectedFolder = -1;
+
   albumAdded: string;
+  albums = [];
+  selectedAlbum = -1;
 
   constructor(private zone: NgZone, private sanitizer: DomSanitizer) {}
 
@@ -32,7 +35,10 @@ export class AppComponent implements OnInit {
       this.zone.run(() => {});
     });
     ipcRenderer.on('init-data', (event, message) => {
-      this.photosFolders = message.folders;
+      console.log('#EVENT: init-data');
+      console.log('message: ' + message);
+      this.photosFolders = message.appPpt.folders;
+      this.albums = message.albums;
       this.zone.run(() => {});
     });
     ipcRenderer.on('display-folder-photos', (event, message) => {
@@ -65,6 +71,11 @@ export class AppComponent implements OnInit {
     ipcRenderer.send('get-photos-uri-from-folder', folder);
   }
 
+  loadPhotosFromAlbum(album: string, albumItemIndex: number) {
+    this.selectedAlbum = albumItemIndex;
+    ipcRenderer.send('get-photos-uri-from-album', album);
+  }
+
   displayFolderPhotos(paths) {
     console.log('::displayFolderPhotos() ' + JSON.stringify(paths));
     this.photosPath = paths;
@@ -85,8 +96,11 @@ export class AppComponent implements OnInit {
   }
 
   onAlbumSubmit() {
-    console.log('::onAlbumSubmit')
+    console.log('::onAlbumSubmit');
     this.photoPpt.albums.push(this.albumAdded);
+    if (!(this.albums.includes(this.albumAdded))) {
+      this.albums.push(this.albumAdded);
+    }
     ipcRenderer.send('persist-album', this.photoPpt);
     this.albumAdded = null;
   }
