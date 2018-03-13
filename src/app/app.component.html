@@ -58,7 +58,7 @@
         <div class="col-xl">
 
           <div *ngFor="let photoDate of getPhotosDateGroups();"class="row">
-            <div class="col-xl-12 display-4 bg-light border my-2">{{photoDate | date:'mediumDate':'':'fr-FR'}}</div>
+            <div class="col-xl-12 display-4 bg-light border -2 mb-2-2">{{photoDate | date:'mediumDate':'':'fr-FR'}}</div>
             <div class="clearfix"></div>
             <div *ngFor="let photoPath of photosPath[photoDate]; let i = index">
                 <div class="clearfix" *ngIf="i % 3 == 0"></div>
@@ -82,7 +82,7 @@
                 </ul>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>Albums</b></li>
-                    <li class="list-group-item"><span *ngFor="let album of photoPpt.albums">{{album}} </span></li>
+                    <li class="list-group-item"><a role="button" *ngFor="let album of photoPpt.albums" class="btn btn-outline-primary mr-2 mb-2" href="#">{{album}} </a></li>
                     <li class="list-group-item">
                       {{diagnostic}}
                         <form class="form-inline" #albumForm="ngForm" (ngSubmit)="onAlbumSubmit()">
