@@ -133,12 +133,16 @@ function initAndSavePhotoPptFile(photoPath, exifData) {
     console.log(JSON.stringify(ppt))
     db.insert(ppt, function(err, doc) {
       console.log('Inserted', doc.name, 'with ID', doc._id);
+      savePhotoPptFile(doc)
     })
 
-    fs.writeFile(photoPptFilePath, JSON.stringify(ppt), 'utf8', (err) => {
-      if(err) throw err
-    })
   }
+}
+
+function savePhotoPptFile(photoPpt) {
+  fs.writeFile(path.join(photoPpt.path,photoPpt.filename + ".fourbifoto"), JSON.stringify(photoPpt), 'utf8', (err) => {
+    if(err) throw err
+  })
 }
 
 function getPhotoPathFromFolder(folder) {
@@ -178,6 +182,17 @@ ipcMain.on('ready-to-init-data', () => {
 ipcMain.on('get-photos-uri-from-folder', (event, folder) => {
   console.log('Event ' + 'get-photos-uri-from-folder');
   getPhotoPathFromFolder(folder)
+})
+
+ipcMain.on('persist-album', (event, photoPpt) => {
+  console.log('Event ' + 'persist-album');
+  console.log('PhotoPpt ' + JSON.stringify(photoPpt))
+  db.update({_id: photoPpt._id}, {$set: {albums: photoPpt.albums}}, {}, function (err, numReplaced) {
+    if(err) console.log(err)
+    console.log('NumReplaced = ' + numReplaced)
+  })
+
+  savePhotoPptFile(photoPpt)
 })
 
 function InitDbAndPropertiesAndData() {

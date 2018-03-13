@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   photosPath = [];
   photoPpt = null;
   selectedFolder = -1;
+  albumAdded: string;
 
   constructor(private zone: NgZone, private sanitizer: DomSanitizer) {}
 
@@ -82,4 +83,14 @@ export class AppComponent implements OnInit {
     if (da > db) {return -1; }
     return 0;
   }
+
+  onAlbumSubmit() {
+    console.log('::onAlbumSubmit')
+    this.photoPpt.albums.push(this.albumAdded);
+    ipcRenderer.send('persist-album', this.photoPpt);
+    this.albumAdded = null;
+  }
+
+  // TODO: Remove this when we're done
+  get diagnostic() { return JSON.stringify(this.albumAdded); }
 }

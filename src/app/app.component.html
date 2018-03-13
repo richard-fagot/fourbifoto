@@ -68,7 +68,7 @@
 
         </div>
 
-        <div class="col-xl-2">
+        <div class="col-xl-3">
             <div *ngIf="photoPpt != null" class="card" style="width: 18rem;">
                 <img class="card-img-top" [src]="sanitizer.bypassSecurityTrustUrl(photoPpt.path)" alt="Photo thumb goes here">
                 <div class="card-body">
@@ -83,6 +83,13 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>Albums</b></li>
                     <li class="list-group-item"><span *ngFor="let album of photoPpt.albums">{{album}} </span></li>
+                    <li class="list-group-item">
+                      {{diagnostic}}
+                        <form class="form-inline" #albumForm="ngForm" (ngSubmit)="onAlbumSubmit()">
+                            <input type="text" [(ngModel)]="albumAdded" name="album" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="Album">
+                            <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-plus"></i></button>
+                          </form>
+                    </li>
                 </ul>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>Catégories</b></li>
