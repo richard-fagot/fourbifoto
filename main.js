@@ -145,6 +145,26 @@ function savePhotoPptFile(photoPpt) {
   })
 }
 
+function getPhotoPathFromAlbum(album) {
+  console.log('::getPhotoPathFromAlbum() ' + album)
+  var paths = {}
+  // Ordering results here is unnecessary as the ipc.send function
+  // can reorder elements.
+  db.find({ albums: {$elemMatch: album} }, function (err, docs) {
+    console.log(docs)
+    docs.forEach(function(photo) {
+      var dateString = photo.date.toDateString()
+      if(!(dateString in paths)) {
+        paths[dateString] = []
+      }
+      paths[dateString].push(path.join(photo.path, photo.filename))
+    })
+    console.log("############## PATHS ###########")
+    console.log(paths)
+    win.webContents.send('display-photos', paths)
+  })
+}
+
 function getPhotoPathFromFolder(folder) {
   console.log('::getPhotoPathFromFolder() ' + folder)
   var paths = {}
@@ -161,7 +181,7 @@ function getPhotoPathFromFolder(folder) {
     })
     console.log("############## PATHS ###########")
     console.log(paths)
-    win.webContents.send('display-folder-photos', paths)
+    win.webContents.send('display-photos', paths)
   })
 }
 
@@ -190,6 +210,11 @@ ipcMain.on('ready-to-init-data', () => {
 ipcMain.on('get-photos-uri-from-folder', (event, folder) => {
   console.log('Event ' + 'get-photos-uri-from-folder');
   getPhotoPathFromFolder(folder)
+})
+
+ipcMain.on('get-photos-uri-from-album', (event, album) => {
+  console.log('Event ' + 'get-photos-uri-from-album');
+  getPhotoPathFromAlbum(album)
 })
 
 ipcMain.on('persist-album', (event, photoPpt) => {

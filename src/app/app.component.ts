@@ -41,9 +41,9 @@ export class AppComponent implements OnInit {
       this.albums = message.albums;
       this.zone.run(() => {});
     });
-    ipcRenderer.on('display-folder-photos', (event, message) => {
+    ipcRenderer.on('display-photos', (event, message) => {
       console.log('Received event ' + 'display-folder-photos');
-      this.displayFolderPhotos(message);
+      this.displayPhotos(message);
     });
     ipcRenderer.send('ready-to-init-data');
   }
@@ -76,8 +76,8 @@ export class AppComponent implements OnInit {
     ipcRenderer.send('get-photos-uri-from-album', album);
   }
 
-  displayFolderPhotos(paths) {
-    console.log('::displayFolderPhotos() ' + JSON.stringify(paths));
+  displayPhotos(paths) {
+    console.log('::displayPhotos() ' + JSON.stringify(paths));
     this.photosPath = paths;
     this.zone.run(() => {});
   }
@@ -98,6 +98,7 @@ export class AppComponent implements OnInit {
   onAlbumSubmit() {
     console.log('::onAlbumSubmit');
     this.photoPpt.albums.push(this.albumAdded);
+
     if (!(this.albums.includes(this.albumAdded))) {
       this.albums.push(this.albumAdded);
     }

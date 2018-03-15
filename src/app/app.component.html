@@ -82,7 +82,7 @@
                 </ul>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>Albums</b></li>
-                    <li class="list-group-item"><a role="button" *ngFor="let album of photoPpt.albums" class="btn btn-outline-primary mr-2 mb-2" href="#">{{album}} </a></li>
+                    <li class="list-group-item"><a role="button" *ngFor="let album of photoPpt.albums" class="btn btn-outline-primary mr-2 mb-2">{{album}} </a></li>
                     <li class="list-group-item">
                       {{diagnostic}}
                         <form class="form-inline" #albumForm="ngForm" (ngSubmit)="onAlbumSubmit()">

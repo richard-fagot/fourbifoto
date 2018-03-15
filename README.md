@@ -1,6 +1,8 @@
 # NEXT STEP
 
-=> BUG: l'ajout d'un même album est affiché en double.
+Ajouter la gestion des catégories de la même façon que pour les albums (un album est une catégorie qu'on souhaite pouvoir traiter à part pour sa sémantique et son rôle).
+
+# Step
 Afficher les albums créés dans le menu album et faire le lien d'un clic sur un tag album pour ouvrir l'album correspondant.
 
 # Step
